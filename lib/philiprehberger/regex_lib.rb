@@ -199,7 +199,7 @@ module Philiprehberger
         return Result.new(valid: false, error: "octet #{i + 1} must be numeric") unless octet.match?(/\A\d+\z/)
 
         val = octet.to_i
-        return Result.new(valid: false, error: "octet #{i + 1} must be between 0 and 255") unless val >= 0 && val <= 255
+        return Result.new(valid: false, error: "octet #{i + 1} must be between 0 and 255") unless val.between?(0, 255)
       end
 
       return Result.new(valid: false, error: 'IPv4 does not match expected format') unless IPV4.match?(string)
