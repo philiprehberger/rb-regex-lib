@@ -143,6 +143,62 @@ module Philiprehberger
       results.sort_by { |r| r[:position].begin }
     end
 
+    # Replace the first match of a named pattern in a string.
+    #
+    # @param pattern_name [Symbol] the pattern name
+    # @param string [String] the string to search
+    # @param replacement [String] the replacement text
+    # @return [String] the string with the first match replaced
+    # @raise [Error] if the pattern name is not recognized
+    def self.replace(pattern_name, string, replacement)
+      pat = unanchored_pattern(resolve_pattern!(pattern_name))
+      string.sub(pat, replacement)
+    end
+
+    # Replace all matches of a named pattern in a string.
+    #
+    # @param pattern_name [Symbol] the pattern name
+    # @param string [String] the string to search
+    # @param replacement [String] the replacement text
+    # @return [String] the string with all matches replaced
+    # @raise [Error] if the pattern name is not recognized
+    def self.replace_all(pattern_name, string, replacement)
+      pat = unanchored_pattern(resolve_pattern!(pattern_name))
+      string.gsub(pat, replacement)
+    end
+
+    # Mask matches of a named pattern, keeping the last N characters visible.
+    #
+    # @param pattern_name [Symbol] the pattern name
+    # @param string [String] the string to search
+    # @param char [String] the masking character (default: '*')
+    # @param keep [Integer] number of trailing characters to keep visible (default: 4)
+    # @return [String] the string with matches masked
+    # @raise [Error] if the pattern name is not recognized
+    def self.mask(pattern_name, string, char: '*', keep: 4)
+      pat = unanchored_pattern(resolve_pattern!(pattern_name))
+      string.gsub(pat) do |match|
+        if match.length <= keep
+          char * match.length
+        else
+          (char * (match.length - keep)) + match[-keep..]
+        end
+      end
+    end
+
+    # Wrap matches of a named pattern with delimiter strings.
+    #
+    # @param pattern_name [Symbol] the pattern name
+    # @param string [String] the string to search
+    # @param before [String] text to insert before each match (default: '**')
+    # @param after [String] text to insert after each match (default: '**')
+    # @return [String] the string with matches wrapped
+    # @raise [Error] if the pattern name is not recognized
+    def self.highlight(pattern_name, string, before: '**', after: '**')
+      pat = unanchored_pattern(resolve_pattern!(pattern_name))
+      string.gsub(pat) { |match| "#{before}#{match}#{after}" }
+    end
+
     # Reset custom patterns (useful for testing)
     # @api private
     def self.reset_custom_patterns!
@@ -158,7 +214,14 @@ module Philiprehberger
       end
     end
 
-    private_class_method :resolve_pattern!
+    # @api private
+    def self.unanchored_pattern(pattern)
+      source = pattern.source.delete_prefix('\A').delete_suffix('\z')
+      source = source.gsub(/\(\?<[^>]+>/, '(?:')
+      Regexp.new(source, pattern.options)
+    end
+
+    private_class_method :resolve_pattern!, :unanchored_pattern
 
     # @api private
     def self.validate_email(string)

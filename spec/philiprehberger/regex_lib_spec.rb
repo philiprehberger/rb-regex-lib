@@ -478,6 +478,98 @@ RSpec.describe Philiprehberger::RegexLib do
     end
   end
 
+  describe 'CRON_EXPRESSION' do
+    subject(:pattern) { described_class::CRON_EXPRESSION }
+
+    it 'matches valid cron expressions' do
+      ['0 12 * * 1', '*/5 * * * *', '30 2 15 6 *'].each do |cron|
+        expect(cron).to match(pattern), "expected #{cron.inspect} to match"
+      end
+    end
+
+    it 'rejects invalid cron expressions' do
+      ['60 * * * *', 'abc'].each do |str|
+        expect(str).not_to match(pattern), "expected #{str.inspect} not to match"
+      end
+    end
+  end
+
+  describe 'CIDR' do
+    subject(:pattern) { described_class::CIDR }
+
+    it 'matches valid CIDR notations' do
+      %w[192.168.1.0/24 10.0.0.0/8 172.16.0.0/16].each do |cidr|
+        expect(cidr).to match(pattern), "expected #{cidr} to match"
+      end
+    end
+
+    it 'rejects invalid CIDR notations' do
+      %w[192.168.1.0 192.168.1.0/33 abc/24].each do |str|
+        expect(str).not_to match(pattern), "expected #{str.inspect} not to match"
+      end
+    end
+  end
+
+  describe '.replace' do
+    it 'replaces the first match of a pattern' do
+      text = '123-45-6789 and 987-65-4321'
+      result = described_class.replace(:ssn, text, '[REDACTED]')
+      expect(result).to eq('[REDACTED] and 987-65-4321')
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.replace(:unknown, 'test', 'x') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
+  describe '.replace_all' do
+    it 'replaces all matches of a pattern' do
+      text = '123-45-6789 and 987-65-4321'
+      result = described_class.replace_all(:ssn, text, '[REDACTED]')
+      expect(result).to eq('[REDACTED] and [REDACTED]')
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.replace_all(:unknown, 'test', 'x') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
+  describe '.mask' do
+    it 'masks matches with asterisks keeping last N chars' do
+      text = 'SSN: 123-45-6789'
+      result = described_class.mask(:ssn, text, char: '*', keep: 4)
+      expect(result).to eq('SSN: *******6789')
+    end
+
+    it 'fully masks when match length is less than or equal to keep' do
+      text = '#hi'
+      result = described_class.mask(:hashtag, text, char: '*', keep: 4)
+      expect(result).to eq('***')
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.mask(:unknown, 'test') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
+  describe '.highlight' do
+    it 'wraps matches with default delimiters' do
+      text = 'Visit https://example.com today'
+      result = described_class.highlight(:url, text)
+      expect(result).to eq('Visit **https://example.com** today')
+    end
+
+    it 'wraps matches with custom delimiters' do
+      text = 'Call +14155552671 now'
+      result = described_class.highlight(:phone_e164, text, before: '[', after: ']')
+      expect(result).to eq('Call [+14155552671] now')
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.highlight(:unknown, 'test') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
   describe '.match?' do
     it 'returns true for matching strings' do
       expect(described_class.match?(:email, 'user@example.com')).to be true
