@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-17
+
+### Added
+- `RegexLib.pattern_names` returns a sorted list of all built-in pattern symbol names
+
 ## [0.3.1] - 2026-03-31
 
 ### Changed
