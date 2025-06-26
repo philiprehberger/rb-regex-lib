@@ -675,6 +675,29 @@ RSpec.describe Philiprehberger::RegexLib do
     end
   end
 
+  describe '.count' do
+    it 'returns 0 when there are no matches' do
+      expect(described_class.count(:email, 'no emails here')).to eq(0)
+    end
+
+    it 'returns 1 for a single match' do
+      expect(described_class.count(:email, 'contact user@example.com today')).to eq(1)
+    end
+
+    it 'returns the count of multiple matches for :email' do
+      expect(described_class.count(:email, 'a@b.com x c@d.org')).to eq(2)
+    end
+
+    it 'matches the length of extract_all for the same input' do
+      text = 'Contact hello@example.com or support@test.org or ops@x.io'
+      expect(described_class.count(:email, text)).to eq(described_class.extract_all(:email, text).length)
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.count(:unknown, 'test') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
   describe '.combine' do
     after { described_class.reset_custom_patterns! }
 

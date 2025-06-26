@@ -79,6 +79,12 @@ Philiprehberger::RegexLib.extract_all(:email, text)
 # => ["hello@example.com", "support@test.org"]
 ```
 
+### Count matches
+
+```ruby
+Philiprehberger::RegexLib.count(:email, "a@b.com and c@d.org") # => 2
+```
+
 ### Listing available patterns
 
 ```ruby
@@ -188,6 +194,7 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `RegexLib.match?(pattern_name, string)` | Test string against a named pattern, returns `true`/`false` |
 | `RegexLib.extract(pattern_name, string)` | Extract named captures as a `Hash`, full match as `String`, or `nil` |
 | `RegexLib.extract_all(pattern_name, string)` | Find all matches in the string, returns `Array<String>` |
+| `RegexLib.count(pattern_name, string)` | Count non-overlapping matches in the string, returns `Integer` |
 | `RegexLib.combine(*pattern_names, name: nil)` | Combine patterns with alternation, optionally store with a name |
 | `RegexLib.pattern(name)` | Look up any pattern (built-in or custom) by symbol name |
 | `RegexLib.pattern_names` | Return a sorted `Array<Symbol>` of all built-in pattern names |

@@ -62,11 +62,21 @@ module Philiprehberger
     # @raise [Error] if the pattern name is not recognized
     def self.extract_all(pattern_name, string)
       pattern = resolve_pattern!(pattern_name)
-      # Remove anchors and convert named captures to non-capturing groups
-      source = pattern.source.delete_prefix('\A').delete_suffix('\z')
-      source = source.gsub(/\(\?<[^>]+>/, '(?:')
-      unanchored = Regexp.new(source, pattern.options)
-      string.scan(unanchored)
+      string.scan(unanchored_pattern(pattern))
+    end
+
+    # Count non-overlapping matches of a named pattern in a string.
+    #
+    # Equivalent to `extract_all(pattern_name, string).length` but avoids
+    # allocating the intermediate array of match strings.
+    #
+    # @param pattern_name [Symbol] the pattern name (e.g. :email, :url)
+    # @param string [String] the string to search
+    # @return [Integer] number of non-overlapping matches
+    # @raise [Error] if the pattern name is not recognized
+    def self.count(pattern_name, string)
+      pattern = resolve_pattern!(pattern_name)
+      string.scan(unanchored_pattern(pattern)).length
     end
 
     # Combine multiple patterns with alternation.
