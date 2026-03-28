@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-28
+
+### Added
+- 11 new patterns: IBAN, DOMAIN, FILE_PATH_UNIX, FILE_PATH_WINDOWS, JWT, BASE64, MARKDOWN_LINK, HASHTAG, MENTION, JSON_STRING, HTML_TAG
+- Named capture group extraction for URL, EMAIL, IPV4, SEMANTIC_VERSION, IBAN, MARKDOWN_LINK
+- `RegexLib.combine(*patterns, name:)` for pattern composition
+- `RegexLib.pattern(name)` for pattern lookup by symbol
+- `RegexLib.validate(pattern, string)` with specific failure reasons
+- `RegexLib.scan(string)` for auto-detecting all pattern types in text
+
 ## [0.1.1] - 2026-03-26
 
 ### Added
