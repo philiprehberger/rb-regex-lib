@@ -80,6 +80,12 @@ module Philiprehberger
     # HTML opening/closing tag
     HTML_TAG = %r{\A</?[a-zA-Z][a-zA-Z0-9]*(?:\s+[a-zA-Z][a-zA-Z0-9-]*(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*\s*/?>}
 
+    # Cron expression (minute hour day month weekday, with optional /step)
+    CRON_EXPRESSION = %r{\A(\*|[0-5]?\d)(/\d+)?\s+(\*|[01]?\d|2[0-3])(/\d+)?\s+(\*|[1-9]|[12]\d|3[01])(/\d+)?\s+(\*|[1-9]|1[0-2])(/\d+)?\s+(\*|[0-7])(/\d+)?\z}
+
+    # CIDR notation (IPv4 address with prefix length 0-32)
+    CIDR = %r{\A(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)/(?:3[0-2]|[12]?\d)\z}
+
     # Map of pattern names to constants for helper methods
     PATTERNS = {
       email: EMAIL,
@@ -107,7 +113,9 @@ module Philiprehberger
       hashtag: HASHTAG,
       mention: MENTION,
       json_string: JSON_STRING,
-      html_tag: HTML_TAG
+      html_tag: HTML_TAG,
+      cron_expression: CRON_EXPRESSION,
+      cidr: CIDR
     }.freeze
   end
 end

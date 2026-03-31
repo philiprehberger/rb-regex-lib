@@ -72,7 +72,9 @@ Metrics/CollectionLiteralLength:
   Enabled: false
 
 Layout/LineLength:
-  Max: 500
+  Max: 140
+  Exclude:
+    - "lib/philiprehberger/regex_lib/patterns.rb"
 
 Layout/EndOfLine:
   Enabled: false

@@ -167,6 +167,8 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `MENTION` | Social media mention (@username) |
 | `JSON_STRING` | Double-quoted JSON string with escape support |
 | `HTML_TAG` | HTML opening/closing tag |
+| `CRON_EXPRESSION` | Cron expression (minute hour day month weekday) |
+| `CIDR` | CIDR notation (IPv4/prefix length) |
 
 ## API
 
@@ -179,6 +181,10 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `RegexLib.pattern(name)` | Look up any pattern (built-in or custom) by symbol name |
 | `RegexLib.validate(pattern_name, string)` | Validate with specific failure reasons, returns `Result` |
 | `RegexLib.scan(string)` | Auto-detect all pattern matches in text, returns `Array<Hash>` |
+| `RegexLib.replace(pattern_name, string, replacement)` | Replace first match of a pattern |
+| `RegexLib.replace_all(pattern_name, string, replacement)` | Replace all matches of a pattern |
+| `RegexLib.mask(pattern_name, string, char:, keep:)` | Mask matches, keeping last N chars visible |
+| `RegexLib.highlight(pattern_name, string, before:, after:)` | Wrap matches with delimiter strings |
 
 ## Development
 

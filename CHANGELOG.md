@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-03-31
+
+### Added
+- `CRON_EXPRESSION` and `CIDR` regex patterns
+- `RegexLib.replace(pattern, string, replacement)` for single match replacement
+- `RegexLib.replace_all(pattern, string, replacement)` for global replacement
+- `RegexLib.mask(pattern, string, char:, keep:)` for redacting sensitive data
+- `RegexLib.highlight(pattern, string, before:, after:)` for wrapping matches
+
+### Fixed
+- RuboCop line length limit normalized to 140 (was 500)
+
 ## [0.2.0] - 2026-03-28
 
 ### Added
