@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = 'Pre-built regex patterns for emails, URLs, IPs, dates, and more'
   spec.description = 'A library of tested, documented regex patterns for common data formats. ' \
-                       'Includes named captures, validation helpers, and extraction methods.'
+                     'Includes named captures, validation helpers, and extraction methods.'
   spec.homepage = 'https://philiprehberger.com/open-source-packages/ruby/philiprehberger-regex_lib'
   spec.license = 'MIT'
 
