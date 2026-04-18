@@ -96,6 +96,18 @@ module Philiprehberger
       PATTERNS.fetch(name) { @custom_patterns.fetch(name) { raise Error, "Unknown pattern: #{name.inspect}" } }
     end
 
+    # List all built-in pattern names.
+    #
+    # Returns the symbol names of every pattern available via
+    # {.pattern}, sorted ascending. A fresh array is returned on each
+    # call so callers may mutate it freely without affecting the
+    # underlying pattern registry.
+    #
+    # @return [Array<Symbol>] sorted list of built-in pattern names
+    def self.pattern_names
+      PATTERNS.keys.sort
+    end
+
     # Validate a string against a named pattern with specific failure reasons.
     #
     # @param pattern_name [Symbol] the pattern name

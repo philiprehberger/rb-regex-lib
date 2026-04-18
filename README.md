@@ -79,6 +79,22 @@ Philiprehberger::RegexLib.extract_all(:email, text)
 # => ["hello@example.com", "support@test.org"]
 ```
 
+### Listing available patterns
+
+```ruby
+Philiprehberger::RegexLib.pattern_names
+# => [:base64, :cidr, :credit_card, :cron_expression, :date_iso, :datetime_iso,
+#     :domain, :email, :file_path_unix, :file_path_windows, :hashtag, :hex_color,
+#     :html_tag, :iban, :ipv4, :ipv6, :json_string, :jwt, :mac_address,
+#     :markdown_link, :mention, :phone_e164, :semantic_version, :slug, :ssn,
+#     :time_iso, :url, :uuid]
+
+# A fresh array is returned on each call, so mutation is safe
+Philiprehberger::RegexLib.pattern_names.each do |name|
+  puts "#{name}: #{Philiprehberger::RegexLib.pattern(name).inspect}"
+end
+```
+
 ### Pattern Composition
 
 ```ruby
@@ -174,6 +190,7 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `RegexLib.extract_all(pattern_name, string)` | Find all matches in the string, returns `Array<String>` |
 | `RegexLib.combine(*pattern_names, name: nil)` | Combine patterns with alternation, optionally store with a name |
 | `RegexLib.pattern(name)` | Look up any pattern (built-in or custom) by symbol name |
+| `RegexLib.pattern_names` | Return a sorted `Array<Symbol>` of all built-in pattern names |
 | `RegexLib.validate(pattern_name, string)` | Validate with specific failure reasons, returns `Result` |
 | `RegexLib.scan(string)` | Auto-detect all pattern matches in text, returns `Array<Hash>` |
 | `RegexLib.replace(pattern_name, string, replacement)` | Replace first match of a pattern |

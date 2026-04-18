@@ -699,6 +699,31 @@ RSpec.describe Philiprehberger::RegexLib do
     end
   end
 
+  describe '.pattern_names' do
+    it 'returns an Array of Symbols' do
+      names = described_class.pattern_names
+      expect(names).to be_an(Array)
+      expect(names).to all(be_a(Symbol))
+    end
+
+    it 'returns names sorted ascending' do
+      names = described_class.pattern_names
+      expect(names).to eq(names.sort)
+    end
+
+    it 'includes known built-in pattern names' do
+      names = described_class.pattern_names
+      expect(names).to include(:email, :url, :uuid, :slug, :semantic_version, :jwt, :cidr, :cron_expression)
+    end
+
+    it 'returns a fresh array each call so mutation does not persist' do
+      first = described_class.pattern_names
+      first << :mutated_name
+      second = described_class.pattern_names
+      expect(second).not_to include(:mutated_name)
+    end
+  end
+
   describe '.pattern' do
     after { described_class.reset_custom_patterns! }
 
