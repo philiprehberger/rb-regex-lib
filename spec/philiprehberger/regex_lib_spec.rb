@@ -534,6 +534,28 @@ RSpec.describe Philiprehberger::RegexLib do
     end
   end
 
+  describe '.split' do
+    it 'splits text on email occurrences' do
+      text = 'start hello@example.com middle support@test.org end'
+      result = described_class.split(:email, text)
+      expect(result).to eq(['start ', ' middle ', ' end'])
+    end
+
+    it 'splits text on url occurrences' do
+      text = 'before https://example.com after https://test.org done'
+      result = described_class.split(:url, text)
+      expect(result).to eq(['before ', ' after ', ' done'])
+    end
+
+    it 'returns a single-element array when no match is found' do
+      expect(described_class.split(:email, 'no emails here')).to eq(['no emails here'])
+    end
+
+    it 'raises Error for unknown patterns' do
+      expect { described_class.split(:unknown, 'test') }.to raise_error(Philiprehberger::RegexLib::Error)
+    end
+  end
+
   describe '.mask' do
     it 'masks matches with asterisks keeping last N chars' do
       text = 'SSN: 123-45-6789'

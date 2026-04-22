@@ -189,6 +189,20 @@ module Philiprehberger
       string.gsub(pat, replacement)
     end
 
+    # Split a string on matches of a named pattern.
+    #
+    # Uses the unanchored form of the pattern so matches anywhere in the string act
+    # as delimiters. Empty trailing fields are dropped (default Ruby split behavior).
+    #
+    # @param pattern_name [Symbol] the pattern name
+    # @param string [String] the string to split
+    # @return [Array<String>] the split segments
+    # @raise [Error] if the pattern name is not recognized
+    def self.split(pattern_name, string)
+      pat = unanchored_pattern(resolve_pattern!(pattern_name))
+      string.split(pat)
+    end
+
     # Mask matches of a named pattern, keeping the last N characters visible.
     #
     # @param pattern_name [Symbol] the pattern name
