@@ -137,6 +137,14 @@ result.valid?  # => false
 result.error   # => "version components must be non-negative integers"
 ```
 
+### Splitting on a Pattern
+
+```ruby
+text = "start hello@example.com middle support@test.org end"
+Philiprehberger::RegexLib.split(:email, text)
+# => ["start ", " middle ", " end"]
+```
+
 ### Auto-Scan
 
 ```ruby
@@ -202,6 +210,7 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `RegexLib.scan(string)` | Auto-detect all pattern matches in text, returns `Array<Hash>` |
 | `RegexLib.replace(pattern_name, string, replacement)` | Replace first match of a pattern |
 | `RegexLib.replace_all(pattern_name, string, replacement)` | Replace all matches of a pattern |
+| `RegexLib.split(pattern_name, string)` | Split a string on matches of a named pattern |
 | `RegexLib.mask(pattern_name, string, char:, keep:)` | Mask matches, keeping last N chars visible |
 | `RegexLib.highlight(pattern_name, string, before:, after:)` | Wrap matches with delimiter strings |
 
