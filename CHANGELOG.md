@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-06-14
+
+### Added
+- `RegexLib.any_match?(pattern_name, *strings)` — true if any of the supplied strings matches the named pattern. Convenience wrapper for the common `any? { |s| match?(name, s) }` pattern in form-validation use cases.
+
 ## [0.6.0] - 2026-04-22
 
 ### Added

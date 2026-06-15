@@ -608,6 +608,24 @@ RSpec.describe Philiprehberger::RegexLib do
     end
   end
 
+  describe '.any_match?' do
+    it 'returns true when at least one string matches' do
+      expect(described_class.any_match?(:email, 'not-an-email', 'foo@bar.com')).to be(true)
+    end
+
+    it 'returns false when no string matches' do
+      expect(described_class.any_match?(:email, 'nope', 'still-nope')).to be(false)
+    end
+
+    it 'returns false when no strings are given' do
+      expect(described_class.any_match?(:email)).to be(false)
+    end
+
+    it 'raises Error for an unknown pattern name' do
+      expect { described_class.any_match?(:nonexistent, 'whatever') }.to raise_error(described_class::Error)
+    end
+  end
+
   describe '.extract' do
     it 'extracts named captures from DATE_ISO' do
       result = described_class.extract(:date_iso, '2026-03-26')

@@ -4,6 +4,8 @@
 [![Gem Version](https://badge.fury.io/rb/philiprehberger-regex_lib.svg)](https://rubygems.org/gems/philiprehberger-regex_lib)
 [![Last updated](https://img.shields.io/github/last-commit/philiprehberger/rb-regex-lib)](https://github.com/philiprehberger/rb-regex-lib/commits/main)
 
+![philiprehberger-regex_lib](https://raw.githubusercontent.com/philiprehberger/rb-regex-lib/main/package-card.webp)
+
 Pre-built regex patterns for emails, URLs, IPs, dates, and more
 
 ## Requirements
@@ -195,11 +197,21 @@ Philiprehberger::RegexLib.scan(text).select { |r| [:ssn, :credit_card].include?(
 | `CRON_EXPRESSION` | Cron expression (minute hour day month weekday) |
 | `CIDR` | CIDR notation (IPv4/prefix length) |
 
+### Any-of Matching
+
+```ruby
+require "philiprehberger/regex_lib"
+
+inputs = ['not-an-email', 'foo@bar.com', 'also-not']
+Philiprehberger::RegexLib.any_match?(:email, *inputs)  # => true
+```
+
 ## API
 
 | Method | Description |
 |--------|-------------|
 | `RegexLib.match?(pattern_name, string)` | Test string against a named pattern, returns `true`/`false` |
+| `.any_match?(name, *strings)` | True if any of the strings matches the named pattern |
 | `RegexLib.extract(pattern_name, string)` | Extract named captures as a `Hash`, full match as `String`, or `nil` |
 | `RegexLib.extract_all(pattern_name, string)` | Find all matches in the string, returns `Array<String>` |
 | `RegexLib.count(pattern_name, string)` | Count non-overlapping matches in the string, returns `Integer` |

@@ -35,6 +35,20 @@ module Philiprehberger
       pattern.match?(string)
     end
 
+    # True when at least one of the given strings matches the named pattern.
+    #
+    # Equivalent to `strings.any? { |s| match?(pattern_name, s) }` but avoids
+    # the closure allocation on call sites that just need a yes/no answer.
+    #
+    # @param pattern_name [Symbol] the pattern name (e.g. :email, :url, :ipv4)
+    # @param strings [Array<String>] the strings to test
+    # @return [Boolean] true if any string matches the pattern
+    # @raise [Error] if the pattern name is not recognized
+    def self.any_match?(pattern_name, *strings)
+      pattern = resolve_pattern!(pattern_name)
+      strings.any? { |s| pattern.match?(s) }
+    end
+
     # Extract named captures from a string using a named pattern.
     #
     # @param pattern_name [Symbol] the pattern name (e.g. :date_iso, :semantic_version)
